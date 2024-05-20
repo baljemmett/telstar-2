@@ -403,12 +403,14 @@ func handleConn(conn net.Conn, settings config.Config) {
 					// create a new context that can be used to allow rendering to be cancelled
 					ctx, cancel = context.WithCancel(context.Background())
 					wg.Add(1)
-					go renderer.Render(ctx, conn, &wg, &frame, sessionId, settings, renderOptions)
+					go func() {
+						renderer.Render(ctx, conn, &wg, &frame, sessionId, settings, renderOptions)
 
-					if frame.FrameType == "exit" {
-						cancel()
-						return
-					}
+						if frame.FrameType == "exit" {
+							cancel()
+							closeConn(conn)
+						}
+					}()
 					currentFrame = frame
 
 				}
