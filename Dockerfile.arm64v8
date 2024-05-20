@@ -7,7 +7,8 @@
 
 FROM arm64v8/ubuntu
 LABEL maintainer="John Newcombe, https://glasstty.com"
-ENV REFRESHED_AT 2024-02-02
+LABEL local_maintainer="Ben A L Jemmett, https://balj.uk"
+ENV REFRESHED_AT 2024-05-20
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/London
