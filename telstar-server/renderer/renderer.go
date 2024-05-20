@@ -89,7 +89,7 @@ func RenderSystemMessage(ctx context.Context, conn net.Conn, wg *synchronisation
 	// a cursor-on for a specific nav message (see settings)
 	// if last char of message is cursor on, remove it, once all of the
 	// cursor positioning has been done, pop it back (see below)
-	if message[len(message)-1:] == string(globals.CURON) {
+	if len(message) > 0 && message[len(message)-1:] == string(globals.CURON) {
 		message = message[:len(message)-1]
 		lastChar = string(globals.CURON)
 	}
