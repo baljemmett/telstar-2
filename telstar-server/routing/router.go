@@ -303,18 +303,16 @@ func selectPreviousFrame(request *RouterRequest, response *RouterResponse) error
 	// reset to immediate mode
 	response.ImmediateMode = true
 
-	// pop the most recent page
-	pageId, ok := session.PopHistory(request.SessionId)
+	// pop and discard the most recent (current) page
+	session.PopHistory(request.SessionId)
 
-	// if the popped page is the current page then
-	// pop again, note that history pages are not
-	// put back into the history
-	if pageId == request.CurrentPageId {
-		pageId, ok = session.PopHistory(request.SessionId)
-	}
+	// find the new current page from history; don't pop it since we might come
+	// back to it later
+	pageId, ok := session.PeekHistory(request.SessionId)
 
 	if ok {
 		// indicate that this page id was retrieved from the history
+		// so that we know not to add another instance of it!
 		response.HistoryPage = true
 		response.NewPageId = pageId
 

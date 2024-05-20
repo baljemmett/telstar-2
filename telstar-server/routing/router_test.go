@@ -331,6 +331,7 @@ func Test_selectPreviousFrame(t *testing.T) {
 	session.PushHistory(SESSIONID, "7a")
 	session.PushHistory(SESSIONID, "8a")
 	session.PushHistory(SESSIONID, "9a")
+	session.PushHistory(SESSIONID, "0a")
 
 	// table to test the buffer
 	var tests = []Test{
@@ -351,7 +352,13 @@ func Test_selectPreviousFrame(t *testing.T) {
 			"bad pageId, immediate mode, with history",
 			RouterRequest{0, "", false, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},SESSIONID},
 			RouterResponse{0, "", "", false, true},
-			"7a", true, true, true, // set immediate mode to true, set new pageId be invalid also
+			"7a", true, true, false, // set immediate mode to true, set new pageId be invalid also
+		},
+		{
+			"history now empty",
+			RouterRequest{0, "", false, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},SESSIONID},
+			RouterResponse{0, "", "", false, true},
+			"", true, false, true, // set immediate mode to true, set new pageId be invalid also
 		},
 
 		// History should be empty now
